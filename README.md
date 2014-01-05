@@ -2,10 +2,9 @@ tasting `cygwin_stackdump()`.
 
 result:
 
-* `cygwin_stackdump()` creates a file named executable's plus  
-  suffixed `.stackdump`.
-* `cygwin_stackdump()` writes simple stack trace which are  
-  constructed by frame, function and args in hex notation.
+* `cygwin_stackdump()` creates a file named executable's plus suffixed `.stackdump`.
+* `cygwin_stackdump()` writes simple stack trace which are constructed by frame,   
+  function and args in hex notation.
 
 ```
 $ uname -a
