@@ -4,7 +4,7 @@ about `cygwin_stackdump()`:
 * `cygwin_stackdump()` writes simple stack trace which are constructed by frame,  
   function and args in hex notation.
 * `fopen()` stackdump file immediately after `cygwin_stackdump()` calling in signle  
-  process will fail, so use fork() and waitpid().
+  process will fail, so use `fork()` and `waitpid()`.
 * cygwin has clang-3.1 as most recent version.  
   w/ 3.1, DWARF part looks broken, so unable to use `addr2line` to decode.
 
@@ -13,7 +13,7 @@ about `unwind.h`:
 * cygwin has clang-3.1 as most recent version.  
   w/ clang-3.1, DWARF part looks broken, so unable to use `addr2line` to decode.  
   w/ clang-3.1, only `_Unwind_GetIP()` and `_Unwind_Backtrace()` are supported.  
-  as upstream version, see `http://clang.llvm.org/doxygen/unwind_8h.html.`
+  as upstream version, see http://clang.llvm.org/doxygen/unwind_8h.html.
 
 ```
 $ uname -a
