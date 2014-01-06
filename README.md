@@ -38,5 +38,4 @@ Frame     Function  Args
 0022AC68  0040123A (00000001, 0022AC8C, 20010100, 61007F58)
 0022AD28  61007FB5 (00000000, 0022CDB4, 61007120, 00000000)
 End of stack trace
-hiyuh@jabberwocky ~/git-repos/cygwin-stackdump-example
 ```
