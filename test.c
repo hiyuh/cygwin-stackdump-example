@@ -7,22 +7,50 @@
 	#include <unistd.h>
 	#include <sys/types.h>
 	#include <sys/wait.h>
+	#include <errno.h>
 	extern void cygwin_stackdump();
 	static void show_stackdump() {
-		// NOTE: fopen() stackdump file immediately after cygwin_stackdump() calling
-		//       in signle process will fail, so use fork() and waitpid().
-		pid_t pid = fork();
-		if (pid == 0) {
+		#if defined(USE_FORK_WAITPID)
+			// NOTE: fopen() stackdump file immediately after cygwin_stackdump() calling
+			//       in signle process will fail, so use fork() and waitpid().
+			pid_t pid = fork();
+			if (pid == 0) {
+				cygwin_stackdump();
+				return;
+			} else if (pid > 0){
+				int status;
+				if (waitpid(pid, &status, 0) != pid) {
+					assert(false);
+				}
+				if (WEXITSTATUS(status) != 0) {
+					assert(false);
+				}
+				char *fname = (char *)realloc(
+					strdup(__FILE__),
+					strlen(__FILE__)
+					- strlen(".c")
+					+ strlen("-cygwin_stackdump-fork-waitpid.exe.stackdump")
+					+ 1
+				);
+				strcpy(&fname[strlen(__FILE__) - strlen(".c")], "-cygwin_stackdump-fork-waitpid.exe.stackdump");
+				FILE *fp = fopen(fname, "r");
+				if (fp == NULL) {
+					perror("fopen");
+					assert(false);
+				}
+				size_t size;
+				char buf[1024];
+				while ((size = fread(buf, sizeof(char), 1024, fp)) > 0)
+					fwrite(buf, sizeof(char), size, stderr);
+				fclose(fp);
+				remove(fname);
+				free(fname);
+				return;
+			} else {
+				assert(false);
+			}
+		#else
 			cygwin_stackdump();
-			return;
-		} else if (pid > 0){
-			int status;
-			if (waitpid(pid, &status, 0) != pid) {
-				assert(false);
-			}
-			if (WEXITSTATUS(status) != 0) {
-				assert(false);
-			}
 			char *fname = (char *)realloc(
 				strdup(__FILE__),
 				strlen(__FILE__)
@@ -32,7 +60,10 @@
 			);
 			strcpy(&fname[strlen(__FILE__) - strlen(".c")], "-cygwin_stackdump.exe.stackdump");
 			FILE *fp = fopen(fname, "r");
-			assert(fp != NULL);
+			if (fp == NULL) {
+				perror("fopen");
+				assert(false);
+			}
 			size_t size;
 			char buf[1024];
 			while ((size = fread(buf, sizeof(char), 1024, fp)) > 0)
@@ -41,9 +72,7 @@
 			remove(fname);
 			free(fname);
 			return;
-		} else {
-			assert(false);
-		}
+		#endif
 	}
 #elif defined(USE_UNWIND)
 	// FIXME: cygwin has clang-3.1 as most recent version.
