@@ -9,6 +9,8 @@
 	#include <sys/wait.h>
 	#include <errno.h>
 	extern void cygwin_stackdump();
+	// FIXME: Use __argv?
+	static char *ename;
 	static void show_stackdump() {
 		#if defined(USE_FORK_WAITPID)
 			// NOTE: fopen() stackdump file immediately after cygwin_stackdump() calling
@@ -25,14 +27,8 @@
 				if (WEXITSTATUS(status) != 0) {
 					assert(false);
 				}
-				char *fname = (char *)realloc(
-					strdup(__FILE__),
-					strlen(__FILE__)
-					- strlen(".c")
-					+ strlen("-cygwin_stackdump-fork-waitpid.exe.stackdump")
-					+ 1
-				);
-				strcpy(&fname[strlen(__FILE__) - strlen(".c")], "-cygwin_stackdump-fork-waitpid.exe.stackdump");
+				char *fname = (char *)malloc(strlen(ename) + sizeof (".exe.stackdump"));
+				sprintf(fname, "%s.exe.stackdump", ename);
 				FILE *fp = fopen(fname, "r");
 				if (fp == NULL) {
 					perror("fopen");
@@ -51,14 +47,8 @@
 			}
 		#else
 			cygwin_stackdump();
-			char *fname = (char *)realloc(
-				strdup(__FILE__),
-				strlen(__FILE__)
-				- strlen(".c")
-				+ strlen("-cygwin_stackdump.exe.stackdump")
-				+ 1
-			);
-			strcpy(&fname[strlen(__FILE__) - strlen(".c")], "-cygwin_stackdump.exe.stackdump");
+			char *fname = (char *)malloc(strlen(ename) + sizeof (".exe.stackdump"));
+			sprintf(fname, "%s.exe.stackdump", ename);
 			FILE *fp = fopen(fname, "r");
 			if (fp == NULL) {
 				perror("fopen");
@@ -114,6 +104,9 @@ fdecl(1,  2)
 fdecl(0,  1)
 
 int main(int argc, char *argv[]) {
+	#if defined(USE_CYGWIN_STACKDUMP)
+		ename = argv[0];
+	#endif
 	f0();
 	return 0;
 }
