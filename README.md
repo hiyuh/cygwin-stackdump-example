@@ -17,7 +17,7 @@ about `unwind.h`:
 
 ```
 $ uname -a
-CYGWIN_NT-6.1-WOW64 lynx 1.7.27(0.271/5/3) 2013-12-09 11:57 i686 Cygwin
+CYGWIN_NT-5.1 jabberwocky 1.7.27(0.271/5/3) 2013-12-09 11:57 i686 Cygwin
 
 $ make CC=gcc info clean check
 gcc -v
@@ -38,47 +38,47 @@ gcc -DUSE_CYGWIN_STACKDUMP -DUSE_FORK_WAITPID -g -O0 -std=gnu99 -Wall -funwind-t
 gcc -DUSE_UNWIND -g -O0 -std=gnu99 -Wall -funwind-tables -o test-unwind.exe test.c
 ./test-cygwin_stackdump.exe || true
 fopen: Device or resource busy
-/bin/sh: line 1:  5784 Aborted                 (core dumped) ./test-cygwin_stackdump.exe
+/bin/sh: line 1:  3504 Aborted                 (core dumped) ./test-cygwin_stackdump.exe
 ./test-cygwin_stackdump.exe 2>&1 | awk '/^[0-9]/ { print $2 }' | addr2line -f -e ./test-cygwin_stackdump.exe || true
 ./test-cygwin_stackdump-fork-waitpid.exe
 Stack trace:
 Frame     Function  Args
-0028AB98  004013B2 (80000008, 00401A40, 0028ABB8, 004013CE)
-0028ABA8  004013C0 (00000000, 00000000, 0028ABC8, 004013DC)
-0028ABB8  004013CE (00401A40, 00401A40, 0028ABD8, 004013EA)
-0028ABC8  004013DC (611882B0, 76682EAD, 0028ABE8, 004013F8)
-0028ABD8  004013EA (00000000, 00000000, 0028ABF8, 00401406)
-0028ABE8  004013F8 (00000000, 610063A0, 0028AC08, 00401414)
-0028ABF8  00401406 (00401A44, 00401A40, 0028AC18, 00401422)
-0028AC08  00401414 (610063A0, 6119EF5B, 0028AC28, 00401430)
-0028AC18  00401422 (0000002F, 0028AC5C, 0028AC38, 00401443)
-0028AC28  00401430 (00000000, 0028CD84, 0028ACF8, 61007FB5)
-0028AC38  00401443 (00000001, 0028AC5C, 80010100, 61007F58)
-0028ACF8  61007FB5 (00000000, 0028CD84, 61007120, 00000000)
+0022ABC8  00401374 (20000008, 00401A10, 0022ABE8, 00401390)
+0022ABD8  00401382 (00000000, 00000000, 0022ABF8, 0040139E)
+0022ABE8  00401390 (00401A10, 00401A10, 0022AC08, 004013AC)
+0022ABF8  0040139E (611882B0, 7FFDFC00, 0022AC18, 004013BA)
+0022AC08  004013AC (7C80B760, 00000000, 0022AC28, 004013C8)
+0022AC18  004013BA (00000000, 610063A0, 0022AC38, 004013D6)
+0022AC28  004013C8 (00401A14, 00401A10, 0022AC48, 004013E4)
+0022AC38  004013D6 (610063A0, 6119EF5B, 0022AC58, 004013F2)
+0022AC48  004013E4 (0000002F, 0022AC8C, 0022AC68, 0040140F)
+0022AC58  004013F2 (00000000, 0022CDB4, 0022AD28, 61007FB5)
+0022AC68  0040140F (00000001, 0022AC8C, 20010100, 61007F58)
+0022AD28  61007FB5 (00000000, 0022CDB4, 61007120, 00000000)
 End of stack trace
 ./test-cygwin_stackdump-fork-waitpid.exe 2>&1 | awk '/^[0-9]/ { print $2 }' | addr2line -f -e ./test-cygwin_stackdump-fork-waitpid.exe
 f9
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:105
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:95
 f8
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:106
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:96
 f7
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:107
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:97
 f6
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:108
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:98
 f5
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:109
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:99
 f4
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:110
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:100
 f3
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:111
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:101
 f2
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:112
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:102
 f1
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:113
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:103
 f0
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:114
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:104
 main
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:118
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:111
 ??
 ??:0
 ./test-unwind.exe
@@ -98,35 +98,35 @@ main
 #13: 61007fb5
 ./test-unwind.exe           2>&1 | awk          '{ print $2 }' | addr2line -f -e ./test-unwind.exe
 show_stackdump
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:93
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:83
 f10
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:98
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:88
 f9
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:105
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:95
 f8
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:106
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:96
 f7
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:107
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:97
 f6
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:108
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:98
 f5
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:109
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:99
 f4
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:110
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:100
 f3
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:111
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:101
 f2
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:112
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:102
 f1
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:113
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:103
 f0
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:114
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:104
 main
-/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:118
+/home/hiyuh/git-repos/cygwin-stackdump-example/test.c:111
 ??
 ??:0
 
-$ make CC=clang info clean check
+ $ make CC=clang info clean check
 clang -v
 clang version 3.1 (branches/release_31)
 Target: i386-pc-cygwin
@@ -141,29 +141,29 @@ clang -DUSE_CYGWIN_STACKDUMP -DUSE_FORK_WAITPID -g -O0 -std=gnu99 -Wall -funwind
 clang -DUSE_UNWIND -g -O0 -std=gnu99 -Wall -funwind-tables -o test-unwind.exe test.c
 ./test-cygwin_stackdump.exe || true
 fopen: Device or resource busy
-/bin/sh: line 1:  1188 Aborted                 (core dumped) ./test-cygwin_stackdump.exe
+/bin/sh: line 1:  3412 Aborted                 (core dumped) ./test-cygwin_stackdump.exe
 ./test-cygwin_stackdump.exe 2>&1 | awk '/^[0-9]/ { print $2 }' | addr2line -f -e ./test-cygwin_stackdump.exe || true
 ./test-cygwin_stackdump-fork-waitpid.exe
 Stack trace:
 Frame     Function  Args
-0028ABDC  00401258 (0028ABEC, 00401238, 0028ABF4, 00401228)
-0028ABE4  00401248 (0028ABF4, 00401228, 0028ABFC, 00401218)
-0028ABEC  00401238 (0028ABFC, 00401218, 0028AC04, 00401208)
-0028ABF4  00401228 (0028AC04, 00401208, 0028AC0C, 004011F8)
-0028ABFC  00401218 (0028AC0C, 004011F8, 0028AC14, 004011E8)
-0028AC04  00401208 (0028AC14, 004011E8, 0028AC1C, 004011D8)
-0028AC0C  004011F8 (0028AC1C, 004011D8, 0028AC24, 004011C8)
-0028AC14  004011E8 (0028AC24, 004011C8, 0028AC38, 004011B3)
-0028AC1C  004011D8 (0028AC38, 004011B3, 0028AC5C, 00000001)
-0028AC24  004011C8 (0028AC5C, 00000001, 00000000, 0028ACF8)
-0028AC38  004011B3 (00000001, 0028AC5C, 80010100, 61007F58)
-0028ACF8  61007FB5 (00000000, 0028CD84, 61007120, 00000000)
+0022AC0C  00401268 (0022AC1C, 00401248, 0022AC24, 00401238)
+0022AC14  00401258 (0022AC24, 00401238, 0022AC2C, 00401228)
+0022AC1C  00401248 (0022AC2C, 00401228, 0022AC34, 00401218)
+0022AC24  00401238 (0022AC34, 00401218, 0022AC3C, 00401208)
+0022AC2C  00401228 (0022AC3C, 00401208, 0022AC44, 004011F8)
+0022AC34  00401218 (0022AC44, 004011F8, 0022AC4C, 004011E8)
+0022AC3C  00401208 (0022AC4C, 004011E8, 0022AC54, 004011D8)
+0022AC44  004011F8 (0022AC54, 004011D8, 0022AC68, 004011BD)
+0022AC4C  004011E8 (0022AC68, 004011BD, 0022AC8C, 00000001)
+0022AC54  004011D8 (0022AC8C, 00000001, 00000000, 0022AD28)
+0022AC68  004011BD (00000001, 0022AC8C, 20010100, 61007F58)
+0022AD28  61007FB5 (00000000, 0022CDB4, 61007120, 00000000)
 End of stack trace
 ./test-cygwin_stackdump-fork-waitpid.exe 2>&1 | awk '/^[0-9]/ { print $2 }' | addr2line -f -e ./test-cygwin_stackdump-fork-waitpid.exe
-BFD: Dwarf Error: Offset (4263950) greater than or equal to .debug_str size (1399).
-BFD: Dwarf Error: Offset (4263990) greater than or equal to .debug_str size (1399).
-BFD: Dwarf Error: Offset (4263997) greater than or equal to .debug_str size (1399).
-BFD: Dwarf Error: Offset (4260301) greater than or equal to .debug_line size (3470).
+BFD: Dwarf Error: Offset (4263950) greater than or equal to .debug_str size (1405).
+BFD: Dwarf Error: Offset (4263990) greater than or equal to .debug_str size (1405).
+BFD: Dwarf Error: Offset (4263997) greater than or equal to .debug_str size (1405).
+BFD: Dwarf Error: Offset (4260301) greater than or equal to .debug_line size (3475).
 ??
 fake:?
 ??
@@ -207,7 +207,7 @@ fake:?
 BFD: Dwarf Error: Offset (4263950) greater than or equal to .debug_str size (480).
 BFD: Dwarf Error: Offset (4263990) greater than or equal to .debug_str size (480).
 BFD: Dwarf Error: Offset (4263997) greater than or equal to .debug_str size (480).
-BFD: Dwarf Error: Offset (4260301) greater than or equal to .debug_line size (3421).
+BFD: Dwarf Error: Offset (4260301) greater than or equal to .debug_line size (3423).
 ??
 fake:?
 ??
