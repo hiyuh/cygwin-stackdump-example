@@ -35,5 +35,5 @@ clean:
 	rm -f test-cygwin_stackdump.exe
 	rm -f test-cygwin_stackdump.exe.stackdump
 	rm -f test-cygwin_stackdump-fork-waitpid.exe
-	rm -f test-cygwin_stackdump-fork-waitpid.exe
+	rm -f test-cygwin_stackdump-fork-waitpid.exe.stackdump
 	rm -f test-unwind.exe

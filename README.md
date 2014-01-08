@@ -31,7 +31,7 @@ gcc version 4.8.2 (GCC)
 rm -f test-cygwin_stackdump.exe
 rm -f test-cygwin_stackdump.exe.stackdump
 rm -f test-cygwin_stackdump-fork-waitpid.exe
-rm -f test-cygwin_stackdump-fork-waitpid.exe
+rm -f test-cygwin_stackdump-fork-waitpid.exe.stackdump
 rm -f test-unwind.exe
 gcc -DUSE_CYGWIN_STACKDUMP -g -O0 -std=gnu99 -Wall -funwind-tables -o test-cygwin_stackdump.exe test.c
 gcc -DUSE_CYGWIN_STACKDUMP -DUSE_FORK_WAITPID -g -O0 -std=gnu99 -Wall -funwind-tables -o test-cygwin_stackdump-fork-waitpid.exe test.c
@@ -134,7 +134,7 @@ Thread model: posix
 rm -f test-cygwin_stackdump.exe
 rm -f test-cygwin_stackdump.exe.stackdump
 rm -f test-cygwin_stackdump-fork-waitpid.exe
-rm -f test-cygwin_stackdump-fork-waitpid.exe
+rm -f test-cygwin_stackdump-fork-waitpid.exe.stackdump
 rm -f test-unwind.exe
 clang -DUSE_CYGWIN_STACKDUMP -g -O0 -std=gnu99 -Wall -funwind-tables -o test-cygwin_stackdump.exe test.c
 clang -DUSE_CYGWIN_STACKDUMP -DUSE_FORK_WAITPID -g -O0 -std=gnu99 -Wall -funwind-tables -o test-cygwin_stackdump-fork-waitpid.exe test.c
