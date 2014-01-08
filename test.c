@@ -19,7 +19,7 @@
 			if (pid == 0) {
 				cygwin_stackdump();
 				return;
-			} else if (pid > 0){
+			} else if (pid > 0) {
 				int status;
 				if (waitpid(pid, &status, 0) != pid) {
 					assert(false);
