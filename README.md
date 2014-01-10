@@ -7,6 +7,13 @@ about `cygwin_stackdump()`:
   process will fail, so use `fork()` and `waitpid()`.
 * cygwin has clang-3.1 as most recent version.  
   w/ 3.1, DWARF part looks broken, so unable to use `addr2line` to decode.
+* do not use `cygwin_stackdump()` for new code.  
+  Christopher Faylor said:  
+  "Exporting this function is an ancient mistake but we are stuck with  
+   keeping it around to maintain backwards compatibility.  There is  
+   no guarantee that the stackdump you get from this is correct and  
+   we have no plans on augmenting it further."  
+  http://cygwin.com/ml/cygwin/2014-01/msg00056.html
 
 about `unwind.h`:
 
