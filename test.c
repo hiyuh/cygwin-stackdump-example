@@ -71,7 +71,7 @@
 	#include <stdio.h>
 	#include <inttypes.h>
 	#include <unwind.h>
-	_Unwind_Reason_Code trace_fn(struct _Unwind_Context *ctx, void *d) {
+	static _Unwind_Reason_Code trace_fn(struct _Unwind_Context *ctx, void *d) {
 		int *depth = (int *)d;
 		fprintf(stderr, "#%d: %08" PRIxPTR "\n", *depth, _Unwind_GetIP(ctx));
 		(*depth)++;
