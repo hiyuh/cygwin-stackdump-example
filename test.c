@@ -69,22 +69,46 @@
 	//        w/ 3.1, only _Unwind_GetIP() and _Unwind_Backtrace() are supported on !arm.
 	//        as upstream version, see http://clang.llvm.org/doxygen/unwind_8h.html.
 	#include <stdio.h>
+	#include <stdlib.h>
 	#include <inttypes.h>
 	#include <unwind.h>
-	static _Unwind_Reason_Code trace_fn(struct _Unwind_Context *ctx, void *d) {
-		int *depth = (int *)d;
-		fprintf(stderr, "#%d: %08" PRIxPTR "\n", *depth, _Unwind_GetIP(ctx));
-		(*depth)++;
+	typedef struct trace_arg {
+		size_t depth;
+		uintptr_t *ip;
+	} trace_arg_t;
+	static _Unwind_Reason_Code trace_fn(struct _Unwind_Context *ctx, void *a) {
+		trace_arg_t *arg = (trace_arg_t *)a;
+		arg->depth++;
+		arg->ip = (uintptr_t *)realloc(arg->ip, sizeof(uintptr_t) * arg->depth);
+		arg->ip[arg->depth - 1] = _Unwind_GetIP(ctx);
 		return _URC_NO_REASON;
 	}
 	static void show_stackdump() {
-		int depth = 0;
-		_Unwind_Backtrace(&trace_fn, &depth);
+		trace_arg_t arg = {
+			.depth = 0,
+			.ip = NULL
+		};
+		_Unwind_Backtrace(&trace_fn, &arg);
+		for (size_t d = 0; d < arg.depth; d++) {
+			fprintf(stderr, "#%d: %08" PRIxPTR "\n", arg.depth, arg.ip[d]);
+		}
+		free(arg.ip);
+		return;
 	}
 #endif
 
+#if defined(USE_SIGNAL)
+	#include <signal.h>
+#endif
+
 static void f10() {
-	show_stackdump();
+	#if defined(USE_SIGNAL)
+		if (raise(SIGSEGV) != 0) {
+			perror("raise");
+		}
+	#else
+		show_stackdump();
+	#endif
 	return;
 }
 
@@ -103,7 +127,37 @@ fdecl(2,  3)
 fdecl(1,  2)
 fdecl(0,  1)
 
+#if defined(USE_SIGNAL)
+static void signal_handler(int sig, siginfo_t *info, void *secret) {
+	// FIXME: Following typedef for ucontext_t is plain incorrect.
+	//        cygwin signal does not support SA_SIGINFO properly ATM.
+	//        So the 3rd argument of signal handler is NULL even SA_SIGINFO is set.
+	//typedef struct ucontext ucontext_t;
+	//#if defined(__x86_64__)
+	//	#define PC_FROM_UCONTEXT rip
+	//#else
+	//	#define PC_FROM_UCONTEXT eip
+	//#endif
+	//ucontext_t *uc = (ucontext_t*)secret;
+	//uintptr_t ip = uc->PC_FROM_UCONTEXT;
+	show_stackdump();
+	return;
+}
+
+static void register_signal_handler(void) {
+	struct sigaction sa;
+	sa.sa_sigaction = (void*)signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART | SA_SIGINFO;
+	sigaction(SIGSEGV, &sa, NULL);
+	return;
+}
+#endif
+
 int main(int argc, char *argv[]) {
+	#if defined(USE_SIGNAL)
+	register_signal_handler();
+	#endif
 	#if defined(USE_CYGWIN_STACKDUMP)
 		ename = argv[0];
 	#endif
