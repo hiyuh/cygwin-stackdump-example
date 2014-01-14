@@ -22,8 +22,8 @@ about `unwind.h`:
   w/ clang-3.1, DWARF part looks broken, so unable to use `addr2line` to decode.  
   w/ clang-3.1, only `_Unwind_GetIP()` and `_Unwind_Backtrace()` are supported.  
   as upstream version, see http://clang.llvm.org/doxygen/unwind_8h.html.
-* using `_Unwind_GetIP()` only via `_Unwind_Backtrace()`, it can not dump correctly  
-  in signal handler.
+* using `_Unwind_GetIP()` only via `_Unwind_Backtrace()`, it can not dump stack  
+  correctly in signal handler.
 
 ```
 $ uname -a
