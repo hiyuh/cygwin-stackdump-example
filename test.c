@@ -98,6 +98,7 @@
 #endif
 
 #if defined(USE_SIGNAL)
+	#include <assert.h>
 	#include <signal.h>
 #endif
 
@@ -140,6 +141,7 @@ static void signal_handler(int sig, siginfo_t *info, void *secret) {
 	//#endif
 	//ucontext_t *uc = (ucontext_t*)secret;
 	//uintptr_t ip = uc->PC_FROM_UCONTEXT;
+	assert(secret == NULL);
 	show_stackdump();
 	return;
 }
