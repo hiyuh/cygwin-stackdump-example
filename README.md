@@ -29,7 +29,7 @@ about signal handler:
 
 * `SA_SIGINFO` is not supported properly on cygwin ATM.  
   according to `_cygtls::call_signal_handler()` in `winsup/cygwin/exception.cc`,  
-  the the 3rd argument of signal handler is NULL even if SA_SIGINFO was set.  
+  the 3rd argument of signal handler is NULL even if SA_SIGINFO was set.  
   http://cygwin.com/cgi-bin/cvsweb.cgi/src/winsup/cygwin/exceptions.cc?rev=1.432&content-type=text/x-cvsweb-markup&cvsroot=src  
   FYI, following code project looks promising:  
   http://www.codeproject.com/Articles/4225/Unix-ucontext_t-Operations-on-Windows-Platforms
